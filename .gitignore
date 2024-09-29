@@ -1,0 +1,69 @@
+# Ignore Python virtual environment folders
+venv/
+env/
+ENV/
+.venv/
+.VENV/
+
+# Ignore Python bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore CSV and Excel files
+*.csv
+*.xlsx
+
+# Ignore log and temp files
+*.log
+*.tmp
+
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore Windows specific system files
+Thumbs.db
+desktop.ini
+
+# Ignore other system files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore environment variables
+.env
+*.env
+
+# Ignore coverage reports and testing
+.coverage
+coverage.xml
+nosetests.xml
+
+# Ignore compiled code
+*.out
+*.o
+
+# Ignore builds
+build/
+dist/
+*.egg-info/
+
+# Ignore package dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore data files
+*.csv
+*.xlsx
+*.json
+
+# Ignore archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
