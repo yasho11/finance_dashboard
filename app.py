@@ -1,8 +1,11 @@
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QStackedWidget, QFrame
-from UI.dashboard_view import DashboardView
-from UI.import_view import ImportView
-from UI.reports_view import ReportsView
-from UI.settings_view import SettingsView
+from PySide6.QtGui import QIcon, QFont
+from PySide6.QtCore import QSize
+from ui.dashboard_view import DashboardView
+from ui.import_view import ImportView
+from ui.reports_view import ReportsView
+from ui.settings_view import SettingsView
+from ui.budget_tracker_view import BudgetTrackerView
 import sys
 
 class MainApp(QWidget):
@@ -10,8 +13,12 @@ class MainApp(QWidget):
         super().__init__()
 
         self.setWindowTitle("Finance Dashboard")
-        self.setGeometry(300, 100, 1000, 700)
-        self.setStyleSheet("background-color: #2c2f33; color: #ffffff;")
+        self.setGeometry(300, 100, 1200, 800)
+        self.setStyleSheet("""
+            background-color: #F1F1F1;
+            color: #202020;
+            font-family: Arial, sans-serif;
+        """)
 
         # Main horizontal layout
         main_layout = QHBoxLayout()
@@ -19,36 +26,45 @@ class MainApp(QWidget):
         # Sidebar layout
         sidebar_layout = QVBoxLayout()
 
-        # Sidebar frame
+        # Sidebar frame with shadow effect
         sidebar_frame = QFrame()
-        sidebar_frame.setStyleSheet("background-color: #23272a;")
-        sidebar_frame.setFixedWidth(200)
+        sidebar_frame.setStyleSheet("""
+            background-color: #F1F1F1;
+            border-right: 1px solid #A5D8DD;
+            padding: 10px;
+        """)
+        sidebar_frame.setFixedWidth(220)
 
         # Add buttons to the sidebar
-        dashboard_button = QPushButton("Dashboard")
-        import_button = QPushButton("Import Data")
-        reports_button = QPushButton("Reports")
-        settings_button = QPushButton("Settings")
+        dashboard_button = self.create_sidebar_button("Dashboard", "icons/dashboard.png")
+        import_button = self.create_sidebar_button("Import Data", "icons/import.png")
+        reports_button = self.create_sidebar_button("Reports", "icons/report.png")
+        settings_button = self.create_sidebar_button("Settings", "icons/settings.png")
+        budget_button = self.create_sidebar_button("Budget Tracker", "icons/budget.png")
 
         # Connect sidebar buttons to view change
         dashboard_button.clicked.connect(self.show_dashboard)
         import_button.clicked.connect(self.show_import)
         reports_button.clicked.connect(self.show_reports)
         settings_button.clicked.connect(self.show_settings)
+        budget_button.clicked.connect(self.show_budget_tracker)
 
         # Add buttons to sidebar layout
-        for button in [dashboard_button, import_button, reports_button, settings_button]:
-            button.setStyleSheet("background-color: #7289da; color: white; padding: 10px;")
+        for button in [dashboard_button, import_button, reports_button, settings_button, budget_button]:
             sidebar_layout.addWidget(button)
+        sidebar_layout.addStretch()  # Push everything to the top
 
         sidebar_frame.setLayout(sidebar_layout)
 
         # Create stacked widget to switch between views
         self.stacked_widget = QStackedWidget()
-        self.stacked_widget.addWidget(DashboardView())
-        self.stacked_widget.addWidget(ImportView())
-        self.stacked_widget.addWidget(ReportsView())
-        self.stacked_widget.addWidget(SettingsView())
+
+        # Add the different views to the stacked widget
+        self.stacked_widget.addWidget(DashboardView())  # Index 0: Dashboard
+        self.stacked_widget.addWidget(ImportView())     # Index 1: Import Data
+        self.stacked_widget.addWidget(ReportsView())    # Index 2: Reports
+        self.stacked_widget.addWidget(SettingsView())   # Index 3: Settings
+        self.stacked_widget.addWidget(BudgetTrackerView())  # Index 4: Budget Tracker
 
         # Add sidebar and stacked widget to the main layout
         main_layout.addWidget(sidebar_frame)
@@ -56,17 +72,48 @@ class MainApp(QWidget):
 
         self.setLayout(main_layout)
 
+    def create_sidebar_button(self, text, icon_path):
+        """Create a styled sidebar button with an icon."""
+        button = QPushButton(text)
+        button.setIcon(QIcon(icon_path))
+        button.setIconSize(QSize(30, 30))
+        button.setFixedHeight(50)
+        button.setStyleSheet("""
+            QPushButton {
+                background-color: #0091D5;
+                color: white;
+                border-radius: 10px;
+                text-align: left;
+                padding-left: 20px;
+                font-size: 16px;
+            }
+            QPushButton:hover {
+                background-color: #A5D8DD;
+            }
+        """)
+        return button
+
+    # Sidebar button actions to switch views
     def show_dashboard(self):
+        """Display the Dashboard view."""
         self.stacked_widget.setCurrentIndex(0)
 
     def show_import(self):
+        """Display the Import Data view."""
         self.stacked_widget.setCurrentIndex(1)
 
     def show_reports(self):
+        """Display the Reports view."""
         self.stacked_widget.setCurrentIndex(2)
 
     def show_settings(self):
+        """Display the Settings view."""
         self.stacked_widget.setCurrentIndex(3)
+
+    def show_budget_tracker(self):
+        """Display the Budget Tracker view."""
+        self.stacked_widget.setCurrentIndex(4)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
