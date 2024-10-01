@@ -13,7 +13,6 @@ The **Interactive Finance Dashboard** is a comprehensive tool for managing and v
     - [Clone the Repository](#clone-the-repository)
     - [Set Up the Environment](#set-up-the-environment)
     - [Install Dependencies](#install-dependencies)
-    - [Configure API Keys and Environment Variables](#configure-api-keys-and-environment-variables)
     - [Set Up Google Calendar Credentials](#set-up-google-calendar-credentials)
 - [Running the Dashboard](#running-the-dashboard)
 - [Using the Dashboard](#using-the-dashboard)
@@ -125,17 +124,6 @@ It’s recommended to create a virtual environment for the project.
     pip install -r requirements.txt
     ```
 
-### Configure API Keys and Environment Variables
-
-For currency conversion and any other external services, add your API keys in a `.env` file:
-
-- Example:
-
-    ```plaintext
-    API_KEY=your_api_key
-    ```
-
----
 
 ## Running the Dashboard
 
@@ -146,3 +134,65 @@ python app.py
 
 ```
 ---
+## Using the Dashboard
+
+### Uploading a File
+
+- **Upload Data**: Click the **"Upload File"** button in the dashboard to upload an Excel or CSV file with your financial transaction data.
+- **Supported Columns**:
+    - **Date**: The date of the transaction (in a valid date format).
+    - **Category**: The category of the expense.
+    - **Amount**: The amount spent (in numeric format).
+
+### Viewing Charts and KPIs
+
+- **KPI Section**: View high-level insights like:
+    - Total Expenses
+    - Total Categories
+    - Top Category
+- **Charts**:
+    - **Bar Chart**: Shows spending by category.
+    - **Line Chart**: Shows daily spending trends over time.
+    - **Donut Chart**: Shows category-wise expense distribution.
+
+### Budget Tracking
+
+- **Budget Setup**: Define budgets for various spending categories (e.g., groceries, rent).
+- **Real-Time Updates**: Budgets are updated in real time as new expenses are added. Uses PySide6 signals and slots to communicate updates between components.
+
+### Expense Prediction Using Machine Learning
+
+- **Future Predictions**: Upload past data, and the machine learning model will predict future expenses.
+- **Real Data Testing**: The prediction model is trained on real transaction data and is fine-tuned for accuracy.
+
+### Comparison Across Time Periods
+
+- **Monthly & Yearly Comparisons**: Compare expenses across different months and years to spot trends.
+
+### Export Functionality
+
+- **Export to PDF or Excel**: Export your financial data or charts in both PDF and Excel formats for further analysis or sharing.
+- **Currency Conversion**: Convert the data to different currencies using integrated APIs.
+
+---
+
+## Troubleshooting
+
+If you run into issues, try the following:
+
+- **Issue**: No module named 'PySide6'
+    - **Solution**: Make sure PySide6 is installed by running `pip install PySide6`.
+
+- **Issue**: `FileNotFoundError: No such file or directory`
+    - **Solution**: Ensure you have uploaded a valid CSV or Excel file that contains the necessary columns (`Date`, `Category`, `Amount`).
+
+- **Issue**: `KeyError: 'Date'`
+    - **Solution**: Make sure your uploaded file contains the required `Date` column, properly formatted.
+
+---
+
+## Conclusion
+
+The **Interactive Finance Dashboard** is a comprehensive tool that enables you to manage, visualize, and predict your financial data. Whether you're tracking a personal budget or managing business expenses, this dashboard provides insightful charts, real-time updates, and machine learning predictions to help you make informed decisions.
+
+We welcome any contributions or suggestions to improve the project. Feel free to submit issues or pull requests.
