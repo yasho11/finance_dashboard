@@ -1,11 +1,12 @@
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QStackedWidget, QFrame
-from PySide6.QtGui import QIcon, QFont
+from PySide6.QtGui import QIcon
 from PySide6.QtCore import QSize
 from ui.dashboard_view import DashboardView
 from ui.import_view import ImportView
 from ui.reports_view import ReportsView
 from ui.settings_view import SettingsView
 from ui.budget_tracker_view import BudgetTrackerView
+from ui.expense_prediction_view import ExpensePredictionView  # Import the new view for expense prediction
 import sys
 
 class MainApp(QWidget):
@@ -41,6 +42,7 @@ class MainApp(QWidget):
         reports_button = self.create_sidebar_button("Reports", "icons/report.png")
         settings_button = self.create_sidebar_button("Settings", "icons/settings.png")
         budget_button = self.create_sidebar_button("Budget Tracker", "icons/budget.png")
+        predict_button = self.create_sidebar_button("Expense Prediction", "icons/predict.png")  # New button for prediction
 
         # Connect sidebar buttons to view change
         dashboard_button.clicked.connect(self.show_dashboard)
@@ -48,9 +50,10 @@ class MainApp(QWidget):
         reports_button.clicked.connect(self.show_reports)
         settings_button.clicked.connect(self.show_settings)
         budget_button.clicked.connect(self.show_budget_tracker)
+        predict_button.clicked.connect(self.show_expense_prediction)  # Navigate to expense prediction
 
         # Add buttons to sidebar layout
-        for button in [dashboard_button, import_button, reports_button, settings_button, budget_button]:
+        for button in [dashboard_button, import_button, reports_button, settings_button, budget_button, predict_button]:
             sidebar_layout.addWidget(button)
         sidebar_layout.addStretch()  # Push everything to the top
 
@@ -65,6 +68,7 @@ class MainApp(QWidget):
         self.stacked_widget.addWidget(ReportsView())    # Index 2: Reports
         self.stacked_widget.addWidget(SettingsView())   # Index 3: Settings
         self.stacked_widget.addWidget(BudgetTrackerView())  # Index 4: Budget Tracker
+        self.stacked_widget.addWidget(ExpensePredictionView())  # Index 5: Expense Prediction
 
         # Add sidebar and stacked widget to the main layout
         main_layout.addWidget(sidebar_frame)
@@ -113,6 +117,10 @@ class MainApp(QWidget):
     def show_budget_tracker(self):
         """Display the Budget Tracker view."""
         self.stacked_widget.setCurrentIndex(4)
+
+    def show_expense_prediction(self):
+        """Display the Expense Prediction view."""
+        self.stacked_widget.setCurrentIndex(5)
 
 
 if __name__ == "__main__":

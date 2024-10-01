@@ -1,38 +1,68 @@
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QPushButton, QFrame, QFileDialog
 )
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QScrollArea
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
 
+
 class DashboardView(QWidget):
     def __init__(self):
         super().__init__()
 
-        # Load data from the Excel file
+        # Initialize the expense data to an empty DataFrame to avoid errors
         self.expense_data = pd.DataFrame()
 
-        # Main vertical layout
-        layout = QVBoxLayout()
+        # Main layout for the entire view
+        main_layout = QVBoxLayout(self)
+
+        # Scroll area that will contain the dashboard content
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)
+
+        # Scrollable content container
+        scroll_content = QWidget()
+        scroll_layout = QVBoxLayout(scroll_content)
+        scroll_layout.setContentsMargins(20, 20, 20, 20)  # Add margins for better padding
+        scroll_layout.setSpacing(15)  # Spacing between elements
 
         # Header
-        layout.addLayout(self.create_header())
+        scroll_layout.addLayout(self.create_header())
 
         # KPI Cards (Top Row)
-        layout.addLayout(self.create_kpi_cards())
+        scroll_layout.addLayout(self.create_kpi_cards())
 
-        # Button to load CSV data
-        self.load_data_button = QPushButton("Load Expense Data")
-        self.load_data_button.clicked.connect(self.load_data)
-        layout.addWidget(self.load_data_button)
+        # Button to load CSV data with modern styling
+        self.upload_button = QPushButton("Upload File")
+        self.upload_button.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                padding: 15px 30px;
+                font-size: 16px;
+                font-weight: bold;
+                border-radius: 10px;
+                margin: 20px 0;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """)
+        self.upload_button.clicked.connect(self.load_data)
+        scroll_layout.addWidget(self.upload_button)
 
         # Charts Section
         self.charts_layout = self.create_charts_section()
-        layout.addLayout(self.charts_layout)
+        scroll_layout.addLayout(self.charts_layout)
 
-        self.setLayout(layout)
+        # Set scroll area content
+        scroll_area.setWidget(scroll_content)
+        main_layout.addWidget(scroll_area)
+
+        self.setLayout(main_layout)
 
     def load_data(self):
         """Load data from an Excel file and prepare it for visualization."""
